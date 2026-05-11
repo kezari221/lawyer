@@ -4,11 +4,13 @@ from database import (
     get_all_situations, get_situation_by_id, add_situation,
     update_situation, delete_situation
 )
+import os
 
 admin_bp = Blueprint('admin', __name__, template_folder='templates')
 
-ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD = 'admin123'
+# Берем логин/пароль из переменных окружения (безопасно для продакшена)
+ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'admin')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'admin123')
 
 def login_required(f):
     @wraps(f)
@@ -37,7 +39,7 @@ def logout():
 def dashboard():
     situations = get_all_situations()
     
-    # Группируем ситуации по категориям для удобного отображения
+    # Группируем ситуации по категориям
     situations_by_category = {}
     for situation in situations:
         category = situation['category']
