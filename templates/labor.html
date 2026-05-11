@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Трудовое право - Юридическая помощь{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="category-icon">
+        <i class="fas fa-briefcase" style="font-size: 3rem; color: var(--accent);"></i>
+        <i class="fas fa-gavel" style="font-size: 3rem; margin-left: 15px;"></i>
+    </div>
+    <h1><i class="fas fa-building"></i> Трудовое право</h1>
+    <p>Защита прав работников, помощь в трудовых спорах и восстановление справедливости на работе</p>
+    
+    <div class="filters">
+        <input type="text" id="searchInput" placeholder="🔍 Поиск по ситуации..." class="filter-input">
+        <select id="lawFilter" class="filter-select">
+            <option value="all"><i class="fas fa-book"></i> Все статьи</option>
+            <option value="ТК РФ">Трудовой кодекс РФ</option>
+            <option value="ст.">Статьи ТК РФ</option>
+            <option value="КоАП">Кодекс об административных правонарушениях</option>
+        </select>
+    </div>
+</div>
+
+<div class="situations-grid" id="situationsGrid">
+    {% for situation in situations %}
+    <div class="situation-card" data-law="{{ situation.law }}">
+        <div class="situation-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h3><i class="fas fa-file-alt"></i> {{ situation.title }}</h3>
+        <p class="description"><i class="fas fa-info-circle"></i> {{ situation.description }}</p>
+        <div class="solution">
+            <strong><i class="fas fa-lightbulb"></i> Решение:</strong>
+            <p>{{ situation.solution }}</p>
+        </div>
+        <div class="law">
+            <i class="fas fa-book"></i> {{ situation.law }}
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-folder-open" style="font-size: 4rem; color: var(--gray);"></i>
+        <p>Пока нет добавленных ситуаций по трудовому праву</p>
+        <p style="margin-top: 10px;">Зайдите в админ-панель, чтобы добавить</p>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+document.getElementById('searchInput').addEventListener('keyup', filterSituations);
+document.getElementById('lawFilter').addEventListener('change', filterSituations);
+
+function filterSituations() {
+    const searchText = document.getElementById('searchInput').value.toLowerCase();
+    const lawFilter = document.getElementById('lawFilter').value;
+    const cards = document.querySelectorAll('.situation-card');
+    
+    cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('.description').textContent.toLowerCase();
+        const law = card.querySelector('.law').textContent;
+        
+        const matchesSearch = title.includes(searchText) || description.includes(searchText);
+        const matchesLaw = lawFilter === 'all' || law.includes(lawFilter);
+        
+        if (matchesSearch && matchesLaw) {
+            card.style.display = 'block';
+            card.style.animation = 'fadeInUp 0.5s ease';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+{% endblock %}

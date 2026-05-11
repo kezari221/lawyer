@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .admin-header h1 {
+            color: #667eea;
+            margin: 0;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            margin: 0 2px;
+        }
+        
+        .btn-edit {
+            background: #28a745;
+        }
+        
+        .category-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .category-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .admin-table th {
+            background: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-inactive {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Админ-панель управления</h1>
+            <div>
+                <a href="{{ url_for('admin.add_situation_route') }}" class="btn">➕ Добавить ситуацию</a>
+                <a href="{{ url_for('admin.logout') }}" class="btn btn-danger">🚪 Выйти</a>
+            </div>
+        </div>
+        
+        {% for category, situations in situations.items() %}
+        <div class="category-section">
+            <h2>
+                {% if category == 'zhkh' %}🏠 ЖКХ
+                {% elif category == 'family' %}👨‍👩‍👧 Семейное право
+                {% elif category == 'labor' %}💼 Трудовое право
+                {% elif category == 'dtp' %}🚗 ДТП
+                {% else %}{{ category }}
+                {% endif %}
+                <span style="font-size: 0.9rem; color: #999;">({{ situations|length }} ситуаций)</span>
+            </h2>
+            
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Статус</th>
+                        <th>Закон/Статья</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for situation in situations %}
+                    <tr>
+                        <td>{{ situation.id }}</td>
+                        <td>{{ situation.title }}</td>
+                        <td>
+                            <span class="status-{{ situation.status }}">
+                                {{ 'Активна' if situation.status == 'active' else 'Неактивна' }}
+                            </span>
+                        </td>
+                        <td>{{ situation.law }}</td>
+                        <td>
+                            <a href="{{ url_for('admin.edit_situation_route', situation_id=situation.id) }}" class="btn btn-small btn-edit">✏️ Ред.</a>
+                            <a href="{{ url_for('admin.delete_situation_route', situation_id=situation.id) }}" class="btn btn-small btn-danger" onclick="return confirm('Удалить ситуацию?')">🗑️ Уд.</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

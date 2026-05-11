@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if situation %}Редактировать{% else %}Добавить{% endif %} ситуацию</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .form-container h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>{% if situation %}Редактировать{% else %}Добавить новую{% endif %} ситуацию</h1>
+        
+        <form method="POST">
+            {% if not situation %}
+            <div class="form-group">
+                <label>Категория *</label>
+                <select name="category" required>
+                    <option value="">Выберите категорию</option>
+                    <option value="zhkh">🏠 ЖКХ</option>
+                    <option value="family">👨‍👩‍👧 Семейное право</option>
+                    <option value="labor">💼 Трудовое право</option>
+                    <option value="dtp">🚗 ДТП</option>
+                </select>
+            </div>
+            {% endif %}
+            
+            <div class="form-group">
+                <label>Название ситуации *</label>
+                <input type="text" name="title" value="{{ situation.title if situation else '' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Описание проблемы *</label>
+                <textarea name="description" required>{{ situation.description if situation else '' }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Решение / Рекомендации *</label>
+                <textarea name="solution" required>{{ situation.solution if situation else '' }}</textarea>
+                <small style="color: #666;">Можно использовать перенос строк</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Закон / Статья *</label>
+                <input type="text" name="law" value="{{ situation.law if situation else '' }}" placeholder="Пример: Ст. 1064 ГК РФ" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Статус</label>
+                <select name="status">
+                    <option value="active" {% if situation and situation.status == 'active' %}selected{% endif %}>Активна (показывать на сайте)</option>
+                    <option value="inactive" {% if situation and situation.status == 'inactive' %}selected{% endif %}>Неактивна (скрыть)</option>
+                </select>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn">💾 Сохранить</button>
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">❌ Отмена</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

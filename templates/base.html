@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Юридическая помощь онлайн{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (бесплатные иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Дополнительные стили для фона */
+        body {
+            background-image: url('{{ url_for('static', filename='images/bg.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        /* Затемнение фона для читаемости текста */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 42, 79, 0.85);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="main-nav">
+            <a href="/" class="logo">
+                <i class="fas fa-gavel"></i>
+                <span>ЮрПомощь24</span>
+            </a>
+            <ul>
+                <li><a href="/zhkh"><i class="fas fa-home"></i> ЖКХ</a></li>
+                <li><a href="/dtp"><i class="fas fa-car"></i> ДТП</a></li>
+                <li><a href="/family"><i class="fas fa-heart"></i> Семья</a></li>
+                <li><a href="/labor"><i class="fas fa-briefcase"></i> Трудовое право</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer>
+            <p>© 2026 Юридическая помощь онлайн. Все права защищены.</p>
+            <p class="disclaimer"><i class="fas fa-balance-scale"></i> Информационно-консультационные услуги. Ответы юристов носят информационный характер.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Юридическая помощь онлайн{% endblock %}
+
+{% block content %}
+
+
+<div class="hero">
+    <h1><i class="fas fa-balance-scale"></i> Быстрая юридическая помощь</h1>
+    <p><i class="fas fa-clock"></i> Решаем бытовые проблемы законно и профессионально 24/7</p>
+</div>
+
+<div class="stats-section">
+    <div class="stat-item">
+        <i class="fas fa-check-circle"></i>
+        <span class="stat-number">5</span>
+        <span class="stat-label">Решенных дел</span>
+    </div>
+    <div class="stat-item">
+        <i class="fas fa-star"></i>
+        <span class="stat-number">60%</span>
+        <span class="stat-label">Успешных консультаций</span>
+    </div>
+    <div class="stat-item">
+        <i class="fas fa-headset"></i>
+        <span class="stat-number">24/7</span>
+        <span class="stat-label">Поддержка</span>
+    </div>
+    <div class="stat-item">
+        <i class="fas fa-award"></i>
+        <span class="stat-number">0</span>
+        <span class="stat-label">Лет опыта</span>
+    </div>
+</div>
+
+<div class="categories">
+    <a href="/zhkh" class="category-link">
+        <div class="category">
+            <i class="fas fa-home"></i>
+            <h3>Жилищное право</h3>
+            <p>Коммунальные платежи, соседи, управляющие компании, приватизация</p>
+        </div>
+    </a>
+    
+    <a href="/dtp" class="category-link">
+        <div class="category">
+            <i class="fas fa-car-crash"></i>
+            <h3>ДТП и автоюристы</h3>
+            <p>Оформление ДТП, страховые выплаты, ОСАГО, КАСКО</p>
+        </div>
+    </a>
+    
+    <a href="/family" class="category-link">
+        <div class="category">
+            <i class="fas fa-heart"></i>
+            <h3>Семейное право</h3>
+            <p>Развод, раздел имущества, алименты, опека, брачный договор</p>
+        </div>
+    </a>
+    
+    <a href="/labor" class="category-link">
+        <div class="category">
+            <i class="fas fa-briefcase"></i>
+            <h3>Трудовое право</h3>
+            <p>Увольнение, задержка зарплаты, трудовые споры, восстановление прав</p>
+        </div>
+    </a>
+</div>
+
+<div style="text-align: center; margin: 40px 0;">
+    <a href="/admin/login" class="btn btn-large">
+        <i class="fas fa-lock"></i> Вход для юристов
+    </a>
+</div>
+{% endblock %}
