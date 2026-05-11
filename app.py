@@ -1,9 +1,11 @@
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, render_template
 from admin import admin_bp
 from database import init_db, get_situations_by_category, insert_initial_data
+import os
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here-please-change-it-for-production'
+# Берем секретный ключ из переменных окружения (для Render.com)
+app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-here-for-development')
 
 # Регистрируем blueprint админки
 app.register_blueprint(admin_bp, url_prefix='/admin')
@@ -11,13 +13,16 @@ app.register_blueprint(admin_bp, url_prefix='/admin')
 # Инициализируем базу данных при запуске
 def initialize_database():
     """Инициализация БД и добавление начальных данных"""
-    init_db()
-    # Добавляем начальные данные (только если их нет)
     try:
+        init_db()
+        print("База данных инициализирована")
+        
+        # Добавляем начальные данные
         insert_initial_data()
-        print("База данных инициализирована с начальными данными")
+        print("Начальные данные успешно добавлены")
+        
     except Exception as e:
-        print(f"Ошибка при инициализации данных: {e}")
+        print(f"Ошибка при инициализации: {e}")
 
 # Вызываем инициализацию
 initialize_database()
